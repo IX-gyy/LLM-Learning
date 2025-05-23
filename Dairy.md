@@ -148,3 +148,27 @@ nohup python test.py > output.log 2>&1 &
 查看output.log：  
 `tail -f output.log`
 `less output.log`
+
+---
+5.10
+# 关于部分量化方法
+## SmoothQuant（平滑量化）：为激活值设计的前处理方法
+1. *背景问题*：激活值分布不均导致量化误差大  
+在标准量化中，模型中某些 激活值分布跨度特别大，而量化操作必须把整个分布压缩进一个有限的离散数值空间（如 int8 的 [-128, 127]），这会导致信息丢失严重，精度下降。  
+
+2. *核心思想*：激活-权重平衡（Activation-Weight Balancing）  
+SmoothQuant 的目标是：将激活值的跨度压缩，使其更适合 int8 量化，同时通过权重的反向调整保持输出不变。  
+```
+原始矩阵乘法：
+Y = X * W^T
+
+SmoothQuant重写：
+Y = (X / s) * (W * s)^T
+```
+
+## GPTQ
+1. *背景问题*：大模型无法微调怎么办？  
+对于 GPT-3、LLaMA 之类的千亿参数级别模型，我们很难用传统方法进行量化微调（QAT），这就需要一种不依赖训练的量化方法（Post-Training Quantization, PTQ）。  
+
+2. *核心思想*：最小化量化误差（Error-aware Quantization）  
+GPTQ 的创新点在于：不是直接量化整个矩阵，而是以列为单位，逐列选择最佳量化方式，并最小化误差对下游的影响。对每个列块逐个选择量化值，同时补偿误差。
