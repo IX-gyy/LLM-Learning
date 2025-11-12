@@ -1,0 +1,69 @@
+测试综合能力
+lm_eval \
+  --model vllm \
+  --model_args pretrained=./models/Qwen2.5-7B-Math,\
+add_bos_token=true,\
+dtype=float16,\
+gpu_memory_utilization=0.90,\
+max_model_len=2048 \
+  --tasks boolq,copa,hellaswag,piqa,winogrande \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size auto \
+  --output_path eval_out/Qwen_out
+
+测试数学能力
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math-W4A16-humaneval",add_bos_token=true \
+  --tasks gsm8k \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size 'auto' \
+  --output_path eval_out/Qwen_out
+  
+测试代码能力
+export HF_ALLOW_CODE_EVAL=1
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math-W4A16-medmcqa",add_bos_token=true \
+  --tasks humaneval \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size 'auto' \
+  --output_path eval_out/Qwen_out \
+  --confirm_run_unsafe_code
+
+测试医疗能力
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math-W4A16-race",add_bos_token=true \
+  --tasks medmcqa \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size 'auto' \
+  --output_path eval_out/Qwen_out
+  
+测试常识能力
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math-W4A16-medmcqa",add_bos_token=true \
+  --tasks commonsense_qa \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size 'auto' \
+  --output_path eval_out/Qwen_out
+
+测试英语能力!!!
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math",add_bos_token=true,max_model_len=2150,max_num_seqs=4 \
+  --tasks race \
+  --num_fewshot 5 \
+  --limit 50 \
+  --batch_size 1 \
+  --output_path eval_out/Qwen_out
+  
+gsm8k,medmcqa,medtext,commonsense_qa,race
+lm_eval --model vllm \
+  --model_args pretrained="./models/Qwen2.5-7B-Math",add_bos_token=true \
+  --tasks gsm8k,medmcqa,medtext,commonsense_qa,race \
+  --num_fewshot 5 \
+  --limit 250 \
+  --batch_size 'auto' \
+  --output_path eval_out/Qwen_out
