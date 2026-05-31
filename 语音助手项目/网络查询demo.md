@@ -62,7 +62,7 @@ def search_with_qianfan(query, api_key):
 
 def main():
     # 检查是否配置了 API Key
-    api_key = QIANFAN_API_KEY or os.environ.get("QIANFAN_API_KEY", "bce-v3/ALTAK-iFzl70YqjT3q0YOFCs1dB/109533b30dbac80764b06b1327c6bb7295724216")
+    api_key = QIANFAN_API_KEY or os.environ.get("QIANFAN_API_KEY", "")
     
     if not api_key:
         print("错误：请先在代码中配置 QIANFAN_API_KEY")
